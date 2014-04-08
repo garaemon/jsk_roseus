@@ -51,7 +51,7 @@ if(NOT COMMAND rosbuild_find_ros_package) ## catkin
     list(FIND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/manifest.l _ret)
     if(${_ret} EQUAL -1)
       add_custom_command(OUTPUT ${roseus_INSTALL_DIR}/${arg_pkg}/manifest.l
-        DEPENDS genmanifest_eus #${${arg_pkg}_MESSAGE_FILES} ${${arg_pkg}_SERVICE_FILES}
+        DEPENDS genmanifest_eus ${arg_pkg}_generate_messages_py #${${arg_pkg}_MESSAGE_FILES} ${${arg_pkg}_SERVICE_FILES}
         COMMAND ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH} ${GENMANIFEST_EUS} ${arg_pkg}
         COMMENT "Generating EusLisp code for upstream package ${arg_pkg}")
       list(APPEND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/manifest.l)
@@ -64,7 +64,7 @@ if(NOT COMMAND rosbuild_find_ros_package) ## catkin
       list(FIND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/msg/${_msg_name}.l _ret)
       if(${_ret} EQUAL -1)
         add_custom_command(OUTPUT ${roseus_INSTALL_DIR}/${arg_pkg}/msg/${_msg_name}.l
-          DEPENDS genmsg_eus ${_msg_file}
+          DEPENDS genmsg_eus ${_msg_file} ${arg_pkg}_generate_messages_py
           COMMAND ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH} PYTHONPATH=${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION}:$ENV{PYTHONPATH} ${GENMSG_EUS} ${_msg_file}
           COMMENT "Generating EusLisp code for upstream message ${arg_pkg}/msg/${_msg_name}")
         list(APPEND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/msg/${_msg_name}.l)
@@ -78,7 +78,7 @@ if(NOT COMMAND rosbuild_find_ros_package) ## catkin
       list(FIND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/srv/${_srv_name}.l _ret)
       if(${_ret} EQUAL -1)
         add_custom_command(OUTPUT ${roseus_INSTALL_DIR}/${arg_pkg}/srv/${_srv_name}.l
-          DEPENDS gensrv_eus ${_srv_file}
+          DEPENDS gensrv_eus ${_srv_file} ${arg_pkg}_generate_messages_py
           COMMAND ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH} ${GENSRV_EUS} ${_srv_file}
           COMMENT "Generating EusLisp code for upstream service ${arg_pkg}/srv/${_srv_name}")
         list(APPEND ALL_GEN_OUTPUT_FILES_eus ${roseus_INSTALL_DIR}/${arg_pkg}/srv/${_srv_name}.l)
