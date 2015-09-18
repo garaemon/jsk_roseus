@@ -92,8 +92,9 @@
                                                                      :element-type :char
                                                                      :initial-contents "johosystemkougaku"))
                 (list roseus::FixedArray :bool_data (list t nil))
-                (list roseus::FixedArray :time_data (list (ros::time 0) (ros::time 1)))
-                (list roseus::FixedArray :duration_data (list (ros::time 0) (ros::time 1)))
+                (unless (= (unix::getenv "ROS_DISTRO") "jade")
+                  (list roseus::FixedArray :time_data (list (ros::time 0) (ros::time 1)))
+                  (list roseus::FixedArray :duration_data (list (ros::time 0) (ros::time 1))))
                 (list roseus::FixedArray :string_data (list (instance std_msgs::String :data "ros") (instance std_msgs::String :data "eus")))
 
                 ;; VariableArray (data set is copied from FixedArray)
@@ -110,8 +111,9 @@
                                                                      :element-type :char
                                                                      :initial-contents "johosystemkougaku"))
                 (list roseus::VariableArray :bool_data (list t nil))
-                (list roseus::VariableArray :time_data (list (ros::time 0) (ros::time 1)))
-                (list roseus::VariableArray :duration_data (list (ros::time 0) (ros::time 1)))
+                (unless (= (unix::getenv "ROS_DISTRO") "jade")
+                  (list roseus::VariableArray :time_data (list (ros::time 0) (ros::time 1)))
+                  (list roseus::VariableArray :duration_data (list (ros::time 0) (ros::time 1))))
                 (list roseus::VariableArray :string_data (list (instance std_msgs::String :data "ros") (instance std_msgs::String :data "eus")))
                 ))
   )
@@ -180,7 +182,7 @@
   ;; roseus treats uint8[] data as a string, which is the Euslisp reresentation for byte data.
   ;; see http://wiki.ros.org/msg#Fields
   (subscribe-and-check-msg "uint8multiarray" std_msgs::UInt8MultiArray :data "eus")
-
+  (unless (= (unix::getenv "ROS_DISTRO") "jade")
   (format *error-output* "fixedarray~%")
   (ros::subscribe "fixedarray" roseus::FixedArray #'subscribe-and-check-array-msg)
   (format *error-output* "variablearray~%")
